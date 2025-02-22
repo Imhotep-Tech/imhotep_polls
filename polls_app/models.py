@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+from django.conf import settings
 
 # Create your models here.
 
@@ -9,7 +10,7 @@ class Poll(models.Model):
     question = models.CharField(max_length=2000)
 
     # the user that created this poll
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     # the date where this poll was created
     pub_date = models.DateTimeField(auto_now_add=True)
@@ -30,3 +31,10 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+    
+class User(AbstractUser):
+
+    email_verify = models.BooleanField()
+
+    def __str__(self):
+        return self.username
