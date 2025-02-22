@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from . import views, auth
+from allauth.socialaccount.providers.google.views import oauth2_login
 
 urlpatterns = [
     path('', views.index, name="index"),

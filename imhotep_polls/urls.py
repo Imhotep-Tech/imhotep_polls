@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('polls_app.urls')),
+    path('accounts/', include('imhotep_polls.google_login_urls')),  # Ensure this line is correct
 ]

@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'polls_app',
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -53,6 +55,10 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# Redirect URLs after login/logout
+LOGIN_REDIRECT_URL = '/dashboard/'  # Change to your desired URL
+LOGOUT_REDIRECT_URL = '/login/'     # Change to your desired URL
+
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
@@ -64,6 +70,25 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'imhotepfinance@gmail.com'  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = 'hrsw vzhz cixd eecs'  # Replace with your app password
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '472251730362-umdr2r3ooqf5mjiv7j5usun1mutfredh.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+        'REDIRECT_URI': 'http://127.0.0.1:8000/accounts/google/login/callback/',
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

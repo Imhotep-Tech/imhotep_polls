@@ -34,7 +34,7 @@ class Choice(models.Model):
     
 class User(AbstractUser):
 
-    email_verify = models.BooleanField()
+    email_verify = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username

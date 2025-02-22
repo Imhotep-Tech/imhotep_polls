@@ -13,6 +13,10 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from allauth.socialaccount.models import SocialAccount
+
 
 def register(request):
     if request.method == "POST":
@@ -133,3 +137,10 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
+
+@receiver(post_save, sender=SocialAccount)
+def verify_email_for_google_accounts(sender, instance, created, **kwargs):
+    if created and instance.provider == 'google':
+        user = instance.user
+        user.email_verify = True
+        user.save()
