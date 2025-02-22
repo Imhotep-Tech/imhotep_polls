@@ -3,22 +3,23 @@ window.addEventListener('load', function() {
     loadingOverlay.style.display = 'none'; // Hide the overlay after the page loads
 });
 
-function toggleMenu() {
-    const menu = document.getElementById('dropdown-menu');
-    menu.classList.toggle('hidden');
+function togglePasswordVisibility(passwordFieldId) {
+  var passwordField = document.getElementById(passwordFieldId);
+  var showPasswordButton = passwordField.nextElementSibling;
+  if (passwordField.type === "password") {
+      passwordField.type = "text";
+      showPasswordButton.textContent = "Hide";
+  } else {
+      passwordField.type = "password";
+      showPasswordButton.textContent = "Show";
   }
-
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
-  }
+}
 
   function validatePassword() {
     var password = document.getElementById("password").value;
     var confirmPassword = document.getElementById("confirm_password").value;
-
     if (password !== confirmPassword) {
-        alert("Passwords do not match!");
+        alert("Passwords do not match.");
         return false;
     }
     return true;

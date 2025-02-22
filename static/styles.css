@@ -44,3 +44,13 @@ font-family: "Lucida Sans", Geneva, Verdana, sans-serif;
 font-size: 11px;
 gap: 5px;
 }
+
+.signup-link {
+    color: #007bff; /* Optional: Customize the link color */
+    text-decoration: none; /* Remove underline */
+    font-size: 14px; /* Ensure consistent font size */
+}
+
+.signup-link:hover {
+    text-decoration: underline; /* Underline link on hover */
+}
