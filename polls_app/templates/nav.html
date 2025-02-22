@@ -1,0 +1,71 @@
+<!-- filepath: /home/kbassem/code/imhotep_tech/imhotep_polls/polls_app/templates/nav.html -->
+<header class="bg-body-tertiary fixed-top">
+    <div class="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <!-- Logo Section -->
+        <a class="text-teal-600 font-bold text-lg" href="#">
+            Imhotep Skills
+        </a>
+
+        <!-- Navigation Links for Desktop -->
+        <nav aria-label="Global" class="hidden md:block">
+            <ul class="flex items-center gap-8 text-sm">
+                <li><a class="text-gray-700 hover:text-teal-600" href="">Home</a></li>
+            </ul>
+        </nav>
+
+        <!-- User Profile Dropdown for Desktop -->
+        <div class="relative hidden md:block">
+            <button
+                type="button"
+                class="flex items-center gap-2 text-sm text-gray-700 hover:text-teal-600 border"
+                onclick="toggleMenu()"
+            >
+                <span>{{ username }}</span>
+            </button>
+
+            <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Profile</a>
+                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Change Password</a>
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+            class="block md:hidden rounded bg-gray-100 p-2 text-gray-600 hover:text-teal-600"
+            onclick="toggleMobileMenu()"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-50">
+        <nav aria-label="Mobile Navigation" class="space-y-2 px-4 py-4">
+            <a class="block text-gray-700 hover:text-teal-600" href="">Home</a>
+
+            <div class="border-t border-gray-200 pt-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-medium text-gray-700">{{ username }}</span>
+                </div>
+                <div class="mt-2 space-y-2">
+                    <a href="" class="block text-gray-700 hover:text-teal-600">My Profile</a>
+                    <a href="" class="block text-gray-700 hover:text-teal-600">Change Password</a>
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

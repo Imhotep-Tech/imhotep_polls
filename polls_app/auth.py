@@ -17,7 +17,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from allauth.socialaccount.models import SocialAccount
 
-
 def register(request):
     if request.method == "POST":
         username = request.POST.get('username')

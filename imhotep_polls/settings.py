@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,9 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v5@ud-7p4p!t&rrh8$6ocud)u#6y#e)+=*%v!n&!hm#&i=nq98'
-
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -68,14 +67,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'imhotepfinance@gmail.com'  # Replace with your Gmail address
-EMAIL_HOST_PASSWORD = 'hrsw vzhz cixd eecs'  # Replace with your app password
+EMAIL_HOST_USER = 'imhotepfinance@gmail.com'
+EMAIL_HOST_PASSWORD =  config('MAIL_PASSWORD')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '472251730362-umdr2r3ooqf5mjiv7j5usun1mutfredh.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': config('GOOGLE_CLIENT_ID'),
+            'secret': config('GOOGLE_CLIENT_SECRET'),
             'key': ''
         },
         'SCOPE': [
@@ -128,10 +127,10 @@ WSGI_APPLICATION = 'imhotep_polls.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'imhotep_poll',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'localhost', 
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
+        'HOST': config('DATABASE_HOST'), 
         'PORT': '5432',
     }
 }

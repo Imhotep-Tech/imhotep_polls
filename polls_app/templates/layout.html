@@ -11,8 +11,12 @@
     <title>Imhotep Polls</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
+        {% include "nav.html" %}
+    {% endif %}
+    
+    <!-- Display messages -->
     <div class="container mt-4">
-        <!-- Display messages -->
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -21,14 +25,15 @@
                 </div>
             {% endfor %}
         {% endif %}
+    </div>
 
+    <div class="container mt-4">
         <!-- Main content -->
         {% block content %}{% endblock %}
 
         <div id="loading-overlay">
             <div class="loading-spinner"></div>
         </div>
-    
     </div>
 
     <!-- Bootstrap JS (optional) -->
