@@ -2,14 +2,14 @@
 <header class="bg-body-tertiary fixed-top">
     <div class="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <!-- Logo Section -->
-        <a class="text-teal-600 font-bold text-lg" href="#">
-            Imhotep Skills
+        <a class="text-teal-600 font-bold text-lg" href="/">
+            Imhotep Polls
         </a>
 
         <!-- Navigation Links for Desktop -->
         <nav aria-label="Global" class="hidden md:block">
             <ul class="flex items-center gap-8 text-sm">
-                <li><a class="text-gray-700 hover:text-teal-600" href="">Home</a></li>
+                <li><a class="text-gray-700 hover:text-teal-600" href="{% url 'dashboard' %}">Home</a></li>
             </ul>
         </nav>
 
@@ -49,7 +49,7 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden bg-gray-50">
         <nav aria-label="Mobile Navigation" class="space-y-2 px-4 py-4">
-            <a class="block text-gray-700 hover:text-teal-600" href="">Home</a>
+            <a class="block text-gray-700 hover:text-teal-600" href="{% url 'dashboard' %}">Home</a>
 
             <div class="border-t border-gray-200 pt-4">
                 <div class="flex items-center gap-2">

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    
+    <div class="mx-auto max-w-lg">
+      <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">Create Poll</h1>
+  
+      <form action="{% url 'create_poll' %}" method="post" class="mt-6 mb-0 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
+        {% csrf_token %}
+  
+        <div class="col-span-6 sm:col-span-3 relative">
+            <label class="block text-sm font-medium text-gray-700"> Poll Question </label>
+            <input
+                type="text"
+                name="question"
+                class="w-full rounded-lg border-2 border-blue-500 p-4 pe-12 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
+                placeholder="Question"
+                required
+            />
+        </div>
+
+        <div id="choices-container" class="space-y-4">
+            <div class="col-span-6 sm:col-span-3 relative choice-input">
+                <label class="block text-sm font-medium text-gray-700"> Choice </label>
+                <input
+                    type="text"
+                    name="choices"
+                    class="w-full rounded-lg border-2 border-blue-500 p-4 pe-12 text-sm shadow-sm focus:ring-2 focus:ring-blue-200"
+                    placeholder="Choice"
+                    required
+                />
+                <button type="button" class="mt-2 text-red-600 hover:text-red-800 remove-choice">Remove</button>
+            </div>
+        </div>
+
+        <button
+          type="button"
+          id="add-choice"
+          class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+        >
+          Add Choice
+        </button>
+
+        <button
+          type="submit"
+          class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+        >
+          Create Poll
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

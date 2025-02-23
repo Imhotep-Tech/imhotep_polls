@@ -13,4 +13,5 @@ urlpatterns = [
     path('reset/done/', auth.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('activate/<uidb64>/<token>/', auth.activate, name='activate'),
     path("dashboard/",user.dashboard , name="dashboard"),
+    path("create_poll/",user.create_poll , name="create_poll"),
 ]
