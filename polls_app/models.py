@@ -16,6 +16,7 @@ class Poll(models.Model):
     # the date where this poll was created
     pub_date = models.DateTimeField(auto_now_add=True)
 
+    #a method to generate a link of each poll
     def generate_link(self, request):
         return request.build_absolute_uri(reverse('vote_to_poll') + f'?poll_id={self.id}')
 
@@ -35,18 +36,27 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
-    
+
+#inherate from the User class and add the email verify
 class User(AbstractUser):
 
     email_verify = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
-    
+
+#a class to create the Vote table
 class Vote(models.Model):
+
+    #save the poll
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+
+    #the users ip address
     ip_address = models.GenericIPAddressField()
+
+    #the time that the user voted at
     voted_at = models.DateTimeField(auto_now_add=True)
 
+    #to make sure that the poll and the ip_address are unique so a user can't vote twice
     class Meta:
         unique_together = ('poll', 'ip_address')

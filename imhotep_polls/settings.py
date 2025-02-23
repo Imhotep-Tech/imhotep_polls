@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    #define the app itself
     'polls_app',
-
+    # the library to google login and forget password
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 ]
 
+#added those to the Google login and sending emails
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
@@ -55,8 +56,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Redirect URLs after login/logout
-LOGIN_REDIRECT_URL = '/dashboard/'  # Change to your desired URL
-LOGOUT_REDIRECT_URL = '/login/'     # Change to your desired URL
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/login/' 
 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_REQUIRED = True
@@ -88,6 +89,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'REDIRECT_URI': 'http://127.0.0.1:8000/accounts/google/login/callback/',
     }
 }
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
