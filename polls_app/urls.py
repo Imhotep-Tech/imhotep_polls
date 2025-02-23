@@ -14,4 +14,5 @@ urlpatterns = [
     path('activate/<uidb64>/<token>/', auth.activate, name='activate'),
     path("dashboard/",user.dashboard , name="dashboard"),
     path("create_poll/",user.create_poll , name="create_poll"),
+    path("poll_details/",user.poll_details , name="poll_details"),
 ]

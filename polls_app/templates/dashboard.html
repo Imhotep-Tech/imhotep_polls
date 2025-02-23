@@ -31,7 +31,7 @@
           {% for poll in polls %}
                     <tr>
                         <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-red-900">
-                            <form action="" method="get">
+                            <form action="{% url 'poll_details' %}" method="get">
                                 <input type="hidden" value="{{poll.id}}" name="poll_id">
                                 <button type="submit">{{ poll.question|truncatechars:50 }}</button>
                             </form>

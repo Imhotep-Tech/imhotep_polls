@@ -37,3 +37,17 @@ def create_poll(request):
         "username": request.user.username,
     }
     return render(request, "create_poll.html", context)
+
+@login_required
+def poll_details(request):
+    poll_id = request.GET.get("poll_id")
+
+    poll = Poll.objects.get(id=poll_id)
+    choices = Choice.objects.filter(poll_id=poll_id)
+
+    context = {
+        "username": request.user.username,
+        "poll": poll,
+        "choices":choices
+    }
+    return render(request, "poll_details.html", context)
