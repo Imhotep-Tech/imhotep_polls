@@ -6,8 +6,10 @@ from django.contrib import messages
 # Create your user views here.
 @login_required
 def dashboard(request):
+    polls = Poll.objects.filter(created_by_id=request.user.id)
     context = {
         "username": request.user.username,
+        "polls": polls
     }
     return render(request, "dashboard.html", context)
 
