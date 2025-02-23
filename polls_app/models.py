@@ -42,3 +42,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+class Vote(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    ip_address = models.GenericIPAddressField()
+    voted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('poll', 'ip_address')

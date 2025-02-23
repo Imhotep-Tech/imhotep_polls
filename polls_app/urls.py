@@ -16,4 +16,5 @@ urlpatterns = [
     path("create_poll/",user.create_poll , name="create_poll"),
     path("poll_details/",user.poll_details , name="poll_details"),
     path("vote_to_poll/",user.vote_to_poll , name="vote_to_poll"),
+    path('vote_to_poll/<int:poll_id>/', user.vote_to_poll, name='vote_to_poll_with_id'),
 ]
