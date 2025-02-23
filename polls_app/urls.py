@@ -15,4 +15,5 @@ urlpatterns = [
     path("dashboard/",user.dashboard , name="dashboard"),
     path("create_poll/",user.create_poll , name="create_poll"),
     path("poll_details/",user.poll_details , name="poll_details"),
+    path("vote_to_poll/",user.vote_to_poll , name="vote_to_poll"),
 ]

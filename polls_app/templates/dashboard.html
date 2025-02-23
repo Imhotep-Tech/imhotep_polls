@@ -37,7 +37,9 @@
                             </form>
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-red-700">{{ poll.pub_date }} UTC</td>
-
+                        <td class="px-4 py-2 whitespace-nowrap text-sm">
+                          <button class="bg-blue-500 text-white px-2 py-1 rounded" onclick="copyToClipboard('{{ poll.shareable_link }}')">Copy Link</button>
+                        </td>
                         <!-- <td>
                           <form action="" method="post">
                             <input type="hidden" value="{{skill.skills_id}}" name="skills_id">

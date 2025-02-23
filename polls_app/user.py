@@ -7,6 +7,10 @@ from django.contrib import messages
 @login_required
 def dashboard(request):
     polls = Poll.objects.filter(created_by_id=request.user.id)
+
+    for poll in polls:
+        poll.shareable_link = poll.generate_link(request)
+
     context = {
         "username": request.user.username,
         "polls": polls
@@ -43,6 +47,8 @@ def poll_details(request):
     poll_id = request.GET.get("poll_id")
 
     poll = Poll.objects.get(id=poll_id)
+    poll.shareable_link = poll.generate_link(request)
+    print(poll.shareable_link)
     choices = Choice.objects.filter(poll_id=poll_id)
 
     context = {
@@ -51,3 +57,6 @@ def poll_details(request):
         "choices":choices
     }
     return render(request, "poll_details.html", context)
+
+def vote_to_poll(request):
+    return render(request, "vote_to_poll.html")

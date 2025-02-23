@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
+from django.urls import reverse
 
 # Create your models here.
 
@@ -14,6 +15,9 @@ class Poll(models.Model):
 
     # the date where this poll was created
     pub_date = models.DateTimeField(auto_now_add=True)
+
+    def generate_link(self, request):
+        return request.build_absolute_uri(reverse('vote_to_poll') + f'?poll_id={self.id}')
 
     def __str__(self):
         return self.question
