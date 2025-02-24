@@ -2,6 +2,9 @@ from django.urls import path, include
 from . import views, auth, user
 from allauth.socialaccount.providers.google.views import oauth2_login
 
+# This block of code defines the URL patterns for your Django web application. Each `path` function
+# call represents a URL pattern that maps a specific URL to a corresponding view function within your
+# Django app. Here's a breakdown of what each URL pattern is doing:
 #the urls of the app
 urlpatterns = [
     #the main url

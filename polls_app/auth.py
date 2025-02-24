@@ -152,7 +152,21 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
-# Signal to verify email for Google accounts
+    """
+    The function automatically verifies the email for Google accounts when a new SocialAccount instance
+    is created.
+    
+    :param sender: The `sender` parameter in this code snippet refers to the model class that is sending
+    the signal. In this case, the signal is being sent by the `SocialAccount` model when a new instance
+    of `SocialAccount` is saved
+    :param instance: In the provided code snippet, `instance` refers to the instance of the
+    `SocialAccount` model that triggered the signal. This signal is set to run after a `SocialAccount`
+    instance is saved
+    :param created: The `created` parameter in the code snippet is a boolean value that indicates
+    whether the instance of the `SocialAccount` model was created or updated. In this context, the code
+    is checking if a new `SocialAccount` instance was created and if the provider is 'google', then it
+    sets the
+    """
 @receiver(post_save, sender=SocialAccount)
 def verify_email_for_google_accounts(sender, instance, created, **kwargs):
     if created and instance.provider == 'google':

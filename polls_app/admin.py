@@ -1,3 +1,4 @@
+# This Python code snippet is related to Django's admin interface. Here's what it does:
 from django.contrib import admin
 from .models import Poll, Choice, User
 
