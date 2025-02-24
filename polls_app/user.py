@@ -41,7 +41,7 @@ def create_poll(request):
 
         #loop on the list that got for the choices
         for choice in choices:
-            #create the choice object and save it to the databas too
+            #create the choice object and save it to the database too
             new_choice = Choice.objects.create(
                 poll=poll,
                 choice_text=choice,
@@ -69,11 +69,25 @@ def poll_details(request):
     #create a choice object of all of the choices on the db
     choices = Choice.objects.filter(poll_id=poll_id)
 
+    # Prepare data for Chart.js
+    choice_texts = []
+
+    for choice in choices:
+        choice_texts.append(choice.choice_text)
+
+    vote_counts = []
+
+    for choice in choices:
+        vote_counts.append(choice.votes)
+
+
     #create the data that will be sent to the template
     context = {
         "username": request.user.username,
         "poll": poll,
-        "choices":choices
+        "choices":choices,
+        "choice_texts":choice_texts,
+        "vote_counts":vote_counts,
     }
     return render(request, "poll_details.html", context)
 
@@ -125,7 +139,7 @@ def vote_to_poll(request):
             #send a success message for the user
             messages.success(request, "Your vote has been recorded!")
         except IntegrityError:
-            #if something unexpeted happens and a user make a poll again with the same ip and pass form the first check the db constrain will raise an error
+            #if something unexpected happens and a user make a poll again with the same ip and pass form the first check the db constrain will raise an error
             #so this will catch that error
             messages.error(request, "You have already voted on this poll.")
 

@@ -77,3 +77,17 @@ gap: 5px;
     box-shadow: none;
     padding: 0; /* Optional: Remove padding if needed */
 }
+
+#pollResultsChart {
+  max-width: 400px;
+  max-height: 400px;
+  width: 100%;
+  height: auto;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}

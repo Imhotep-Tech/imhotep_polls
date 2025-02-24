@@ -34,4 +34,19 @@
     </dl>
 </div>
 
+<div class="mb-6 text-center">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">Poll Results</h1>
+    <div class="chart-container">
+        <canvas id="pollResultsChart"></canvas>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const choiceTexts = {{ choice_texts|safe }};
+        const voteCounts = {{ vote_counts|safe }};
+        initializeChart(choiceTexts, voteCounts);
+    });
+</script>
+
 {% endblock %}
