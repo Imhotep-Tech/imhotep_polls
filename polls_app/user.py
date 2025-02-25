@@ -152,3 +152,54 @@ def vote_to_poll(request):
         "choices":choices
     }
     return render(request, "vote_to_poll.html", context)
+
+@login_required
+def update_poll(request, poll_id):
+
+    poll = Poll.objects.get(id = poll_id)
+
+    #checks if the request is post
+    if request.method=="POST":
+
+        #gets the question of the poll
+        question = request.POST.get("question")
+
+        #gets a list of the choices
+        choices = request.POST.getlist("choices")
+
+        #create the poll object and use the create method to save directly to the database
+        poll.question = question
+        poll.save()
+
+        old_choices = Choice.objects.filter(poll=poll)
+
+        # Create a set of existing choice texts for comparison
+        old_choice_texts = set(old_choices.values_list('choice_text', flat=True))
+
+        # Create a set of new choice texts from the form
+        new_choice_texts = set(choices)
+
+        # Determine which choices to delete
+        choices_to_delete = old_choice_texts - new_choice_texts
+
+        # Determine which choices to add
+        choices_to_add = new_choice_texts - old_choice_texts
+
+        # Delete the removed choices
+        Choice.objects.filter(poll=poll, choice_text__in=choices_to_delete).delete()
+
+        # Add the new choices
+        for choice_text in choices_to_add:
+            Choice.objects.create(poll=poll, choice_text=choice_text)
+
+        # Redirect to the dashboard with a success message
+        messages.success(request, "Poll updated successfully!")
+        return redirect("dashboard")
+
+    # If the request wasn't POST, then redirect to the update poll page with the poll data
+    context = {
+        "username": request.user.username,
+        "poll": poll,
+        "choices": Choice.objects.filter(poll=poll)
+    }
+    return render(request, "update_poll.html", context)

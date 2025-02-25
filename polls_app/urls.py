@@ -36,4 +36,6 @@ urlpatterns = [
     path("vote_to_poll/",user.vote_to_poll , name="vote_to_poll"),
     #the after submit url
     path('vote_to_poll/<int:poll_id>/', user.vote_to_poll, name='vote_to_poll_with_id'),
+    #the update url
+     path("update_poll/<int:poll_id>",user.update_poll , name="update_poll"),
 ]
