@@ -37,8 +37,12 @@ urlpatterns = [
     #the after submit url
     path('vote_to_poll/<int:poll_id>/', user.vote_to_poll, name='vote_to_poll_with_id'),
     #the update url
-     path("update_poll/<int:poll_id>",user.update_poll , name="update_poll"),
-      path("delete_poll/<int:poll_id>/", user.delete_poll, name="delete_poll"),
+    path("update_poll/<int:poll_id>",user.update_poll , name="update_poll"),
+    path("delete_poll/<int:poll_id>/", user.delete_poll, name="delete_poll"),
+
     path('password_change/', user_setting.CustomPasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
     path('password_change/done/', user_setting.CustomPasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
+
+    path("update_profile/<int:user_id>",user_setting.update_profile , name="update_profile"),
+    path('activate/<uidb64>/<token>/<new_email>/', user_setting.activate_profile_update, name='activate_profile_update'),
 ]

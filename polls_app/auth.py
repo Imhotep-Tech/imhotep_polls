@@ -60,6 +60,7 @@ def register(request):
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_token(user),
+            'activate':'activate'
         })
         send_mail(mail_subject, message, 'imhoteptech1@gmail.com', [email], html_message=message)
 
