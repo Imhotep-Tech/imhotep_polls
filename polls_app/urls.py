@@ -38,4 +38,5 @@ urlpatterns = [
     path('vote_to_poll/<int:poll_id>/', user.vote_to_poll, name='vote_to_poll_with_id'),
     #the update url
      path("update_poll/<int:poll_id>",user.update_poll , name="update_poll"),
+      path("delete_poll/<int:poll_id>/", user.delete_poll, name="delete_poll"),
 ]

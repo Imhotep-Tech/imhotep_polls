@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Poll, Choice, Vote
 from django.contrib import messages
@@ -203,3 +203,15 @@ def update_poll(request, poll_id):
         "choices": Choice.objects.filter(poll=poll)
     }
     return render(request, "update_poll.html", context)
+
+@login_required
+def delete_poll(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id, created_by= request.user)
+
+    if request.method == 'POST':
+        poll.delete()
+        messages.success(request, "Poll Delete successfully!")
+        return redirect("dashboard")
+    else:
+        messages.error(request, "Method not allowed!")
+        return redirect("dashboard")
