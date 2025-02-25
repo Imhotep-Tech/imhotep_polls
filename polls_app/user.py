@@ -206,6 +206,10 @@ def update_poll(request, poll_id):
 
 @login_required
 def delete_poll(request, poll_id):
+    
+    # `poll = get_object_or_404(Poll, id=poll_id, created_by= request.user)` is a line of code that
+    # retrieves a specific `Poll` object from the database based on the provided `poll_id` and
+    # `created_by` fields.
     poll = get_object_or_404(Poll, id=poll_id, created_by= request.user)
 
     if request.method == 'POST':
