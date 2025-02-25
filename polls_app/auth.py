@@ -16,6 +16,7 @@ from django.http import HttpResponse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, PasswordChangeForm
 
 #the register route
 def register(request):
@@ -139,19 +140,35 @@ def user_logout(request):
     messages.success(request, "You have been logged out.")
     return redirect("login")
 
-# Password reset views
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'password_reset.html'
+    form_class = PasswordResetForm
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, error)
+        return super().form_invalid(form)
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'password_reset_done.html'
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'password_reset_confirm.html'
+    form_class = SetPasswordForm
+
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, error)
+        return super().form_invalid(form)
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
+
+@receiver(post_save, sender=SocialAccount)
+def verify_email_for_google_accounts(sender, instance, created, **kwargs):
     """
     The function automatically verifies the email for Google accounts when a new SocialAccount instance
     is created.
@@ -167,8 +184,6 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     is checking if a new `SocialAccount` instance was created and if the provider is 'google', then it
     sets the
     """
-@receiver(post_save, sender=SocialAccount)
-def verify_email_for_google_accounts(sender, instance, created, **kwargs):
     if created and instance.provider == 'google':
         user = instance.user
         user.email_verify = True
