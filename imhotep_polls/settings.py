@@ -91,6 +91,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Add this to your settings
+SITE_DOMAIN = 'http://127.0.0.1:8000/'  # Replace with your actual domain
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

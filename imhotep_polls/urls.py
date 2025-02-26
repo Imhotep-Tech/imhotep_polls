@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from polls_app.views import sitemap
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('polls_app.urls')),
+    path('sitemap.xml', sitemap, name='sitemap'),
 ]
