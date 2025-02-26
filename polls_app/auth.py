@@ -17,6 +17,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, PasswordChangeForm
+import requests
+from django.conf import settings
+from django.contrib.auth.hashers import make_password
 
 #the register route
 def register(request):
@@ -168,24 +171,126 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
 
-@receiver(post_save, sender=SocialAccount)
-def verify_email_for_google_accounts(sender, instance, created, **kwargs):
-    """
-    The function automatically verifies the email for Google accounts when a new SocialAccount instance
-    is created.
+GOOGLE_CLIENT_ID = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id']
+GOOGLE_CLIENT_SECRET = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['secret']
+GOOGLE_REDIRECT_URI = settings.SOCIALACCOUNT_PROVIDERS['google']['REDIRECT_URI']
+
+def google_login(request):
+    """Initiates the Google OAuth2 login flow"""
+    oauth2_url = (
+        'https://accounts.google.com/o/oauth2/v2/auth?'
+        f'client_id={GOOGLE_CLIENT_ID}&'
+        f'redirect_uri=http://127.0.0.1:8000/google/callback/&'
+        'response_type=code&'
+        'scope=openid email profile'
+    )
+    return redirect(oauth2_url)
+
+def google_callback(request):
+    """Handles the callback from Google OAuth2"""
+    code = request.GET.get('code')
     
-    :param sender: The `sender` parameter in this code snippet refers to the model class that is sending
-    the signal. In this case, the signal is being sent by the `SocialAccount` model when a new instance
-    of `SocialAccount` is saved
-    :param instance: In the provided code snippet, `instance` refers to the instance of the
-    `SocialAccount` model that triggered the signal. This signal is set to run after a `SocialAccount`
-    instance is saved
-    :param created: The `created` parameter in the code snippet is a boolean value that indicates
-    whether the instance of the `SocialAccount` model was created or updated. In this context, the code
-    is checking if a new `SocialAccount` instance was created and if the provider is 'google', then it
-    sets the
-    """
-    if created and instance.provider == 'google':
-        user = instance.user
-        user.email_verify = True
-        user.save()
+    if not code:
+        messages.error(request, "Google login was canceled. Please try again.")
+        return redirect('login')
+
+    # Exchange code for access token
+    token_url = 'https://oauth2.googleapis.com/token'
+    token_payload = {
+        'client_id': GOOGLE_CLIENT_ID,
+        'client_secret': GOOGLE_CLIENT_SECRET,
+        'code': code,
+        'redirect_uri': GOOGLE_REDIRECT_URI,
+        'grant_type': 'authorization_code'
+    }
+
+    try:
+        token_response = requests.post(token_url, data=token_payload)
+        token_data = token_response.json()
+
+        # Get user info using access token
+        userinfo_url = 'https://www.googleapis.com/oauth2/v3/userinfo'
+        headers = {'Authorization': f'Bearer {token_data["access_token"]}'}
+        userinfo_response = requests.get(userinfo_url, headers=headers)
+        user_info = userinfo_response.json()
+
+        email = user_info['email']
+        username = email.split('@')[0]
+        
+        # Check if user exists
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            # Set the backend attribute on the user
+            backend = get_backends()[0]
+            user.backend = f'{backend.__module__}.{backend.__class__.__name__}'
+            # User exists, log them in
+            login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect('dashboard')
+        
+        # Check if username exists
+        if User.objects.filter(username=username).exists():
+            # Store info in session and ask for new username
+            request.session['google_user_info'] = {
+                'email': email,
+                'need_username': True
+            }
+            return render(request, 'add_username_google.html')
+
+        # Create new user
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=make_password(None),  # Random password since using OAuth
+            email_verify=True  # Google accounts are pre-verified
+        )
+
+        backend = get_backends()[0]
+        user.backend = f'{backend.__module__}.{backend.__class__.__name__}'
+
+        # Log user in
+        login(request, user)
+        messages.success(request, "Account created successfully!")
+        return redirect('dashboard')
+
+    except Exception as e:
+        messages.error(request, f"An error occurred during Google login. Please try again. {e}")
+        return redirect('login')
+
+def add_username_google_login(request):
+    
+    if request.method != "POST":
+        return redirect('login')
+
+    user_info = request.session.get('google_user_info', {})
+    if not user_info:
+        messages.error(request, "Session expired. Please try again.")
+        return redirect('login')
+
+    new_username = request.POST.get('username')
+
+    # Validate username
+    if User.objects.filter(username=new_username).exists():
+        messages.error(request, "Username already taken. Please choose another one.")
+        return render(request, 'add_username_google.html')
+
+    # Create user with new username
+    user = User.objects.create_user(
+        username=new_username,
+        email=user_info['email'],
+        password=make_password(None),
+        email_verify=True
+    )
+
+    # Set the backend attribute on the user
+    backend = get_backends()[0]
+    user.backend = f'{backend.__module__}.{backend.__class__.__name__}'
+
+    # Clean up session
+    del request.session['google_user_info']
+
+    # Log user in
+    login(request, user)
+    messages.success(request, "Account created successfully!")
+    return redirect('dashboard')

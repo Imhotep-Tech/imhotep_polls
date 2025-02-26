@@ -1,6 +1,5 @@
 from django.urls import path, include
 from . import views, auth, user, user_setting
-from allauth.socialaccount.providers.google.views import oauth2_login
 
 # This block of code defines the URL patterns for your Django web application. Each `path` function
 # call represents a URL pattern that maps a specific URL to a corresponding view function within your
@@ -47,4 +46,8 @@ urlpatterns = [
 
     path("update_profile/<int:user_id>",user_setting.update_profile , name="update_profile"),
     path('activate/<uidb64>/<token>/<new_email>/', user_setting.activate_profile_update, name='activate_profile_update'),
+
+    path('google/login/', auth.google_login, name='google_login'),
+    path('google/callback/', auth.google_callback, name='google_callback'),
+    path('google/handle-username/', auth.add_username_google_login, name='add_username_google_login'),
 ]
