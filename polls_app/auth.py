@@ -13,10 +13,7 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.http import HttpResponse
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from allauth.socialaccount.models import SocialAccount
-from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm, PasswordChangeForm
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 import requests
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
