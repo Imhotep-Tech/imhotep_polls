@@ -40,6 +40,8 @@ urlpatterns = [
     path("update_poll/<int:poll_id>",user.update_poll , name="update_poll"),
     path("delete_poll/<int:poll_id>/", user.delete_poll, name="delete_poll"),
 
+    path("deactivate_poll/<int:poll_id>/", user.deactivate_poll, name="deactivate_poll"),
+
     path('password_change/', user_setting.CustomPasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),
     path('password_change/done/', user_setting.CustomPasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
 

@@ -3,16 +3,24 @@ from django.contrib.auth.decorators import login_required
 from .models import Poll, Choice, Vote
 from django.contrib import messages
 from django.db import IntegrityError
+from datetime import date
 
 #the user dashboard main function
 @login_required
 def dashboard(request):
     #get all of the user polls
-    polls = Poll.objects.filter(created_by_id=request.user.id)
+    polls = Poll.objects.filter(created_by_id=request.user.id).order_by('id')
+
+    today = date.today()
 
     #loop on them to generate the link and save it as a variable
     for poll in polls:
         poll.shareable_link = poll.generate_link(request)
+
+        if poll.deadline and poll.deadline.date() < today and poll.active:
+            poll.active = not poll.active
+            poll.save()
+            messages.info(request, f"Poll with id '{poll.id}' was automatically deactivated due to deadline.")
 
     #create the context data that will be sent
     context = {
@@ -33,11 +41,23 @@ def create_poll(request):
         #gets a list of the choices
         choices = request.POST.getlist("choices")
 
-        #create the poll object and use the create method to save directly to the database
-        poll = Poll.objects.create(
-            question=question,
-            created_by=request.user,
-        )
+        deadline = request.POST.get("deadline")
+
+        if deadline:
+
+            #create the poll object and use the create method to save directly to the database
+            poll = Poll.objects.create(
+                question=question,
+                created_by=request.user,
+                deadline=deadline,
+            )
+
+        else:
+            #create the poll object and use the create method to save directly to the database
+            poll = Poll.objects.create(
+                question=question,
+                created_by=request.user,
+            )
 
         #loop on the list that got for the choices
         for choice in choices:
@@ -106,8 +126,17 @@ def vote_to_poll(request):
     #gets the poll id
     poll_id = request.GET.get("poll_id")
 
+    today = date.today()
+
     #create an object of the poll with that poll_id
     poll = Poll.objects.get(id=poll_id)
+
+    if (poll.deadline and poll.deadline.date() < today and poll.active) or not poll.active:
+            poll.active = not poll.active
+            poll.save()
+            messages.warning(request, f"This poll is inactive now!.")
+
+            return render(request,"vote_submit.html")
 
     #create an object of the choices with that poll_id
     choices = Choice.objects.filter(poll_id=poll_id)
@@ -167,8 +196,14 @@ def update_poll(request, poll_id):
         #gets a list of the choices
         choices = request.POST.getlist("choices")
 
+        deadline = request.POST.get("deadline")
+
         #create the poll object and use the create method to save directly to the database
         poll.question = question
+        if deadline:
+            poll.deadline = deadline
+        else:
+            poll.deadline = None
         poll.save()
 
         old_choices = Choice.objects.filter(poll=poll)
@@ -215,6 +250,26 @@ def delete_poll(request, poll_id):
     if request.method == 'POST':
         poll.delete()
         messages.success(request, "Poll Delete successfully!")
+        return redirect("dashboard")
+    else:
+        messages.error(request, "Method not allowed!")
+        return redirect("dashboard")
+
+@login_required
+def deactivate_poll(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id, created_by=request.user)
+
+    if request.method == 'POST':
+        today = date.today()
+        # Check if trying to activate an expired poll
+        if not poll.active and poll.deadline and poll.deadline.date() < today:
+            messages.error(request, "Cannot activate expired poll!")
+            return redirect("dashboard")
+            
+        poll.active = not poll.active
+        poll.save()
+        status = "activated" if poll.active else "deactivated"
+        messages.success(request, f"Poll {status} successfully!")
         return redirect("dashboard")
     else:
         messages.error(request, "Method not allowed!")

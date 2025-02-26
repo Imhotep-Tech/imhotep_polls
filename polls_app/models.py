@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from django.conf import settings
 from django.urls import reverse
+from datetime import timedelta
+from django.utils import timezone
 
 # Create your models here.
 
@@ -16,6 +18,12 @@ class Poll(models.Model):
     # the date where this poll was created
     pub_date = models.DateTimeField(auto_now_add=True)
 
+    # the date where this poll will end (optional)
+    deadline = models.DateTimeField(null=True, blank=True, default=None)
+
+    #to set the current status of the poll if active or not
+    active = models.BooleanField(default=True)
+    
     #a method to generate a link of each poll
     def generate_link(self, request):
         return request.build_absolute_uri(reverse('vote_to_poll') + f'?poll_id={self.id}')
@@ -23,7 +31,7 @@ class Poll(models.Model):
     def __str__(self):
         return self.question
 
-#a class to define a table to save the responces and the questions themselves in them
+#a class to define a table to save the responses and the questions themselves in them
 class Choice(models.Model):
     # a ForeignKey to the poll table that this answers are for
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)

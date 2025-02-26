@@ -20,8 +20,12 @@
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Question</th>
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Publish Date</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Copy Link</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             <!-- <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
             <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Actions</th> -->
@@ -30,6 +34,7 @@
         <tbody class="bg-white divide-y divide-gray-200">
           {% for poll in polls %}
                     <tr>
+                      <td class="px-4 py-2 whitespace-nowrap text-sm text-red-700">{{ poll.id }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-red-900">
                             <form action="{% url 'poll_details' %}" method="get">
                                 <input type="hidden" value="{{poll.id}}" name="poll_id">
@@ -40,17 +45,18 @@
                         <td class="px-4 py-2 whitespace-nowrap text-sm">
                           <button class="bg-blue-500 text-white px-2 py-1 rounded" onclick="copyToClipboard('{{ poll.shareable_link }}')">Copy Link</button>
                         </td>
-                        <!-- <td>
-                          <form action="" method="post">
-                            <input type="hidden" value="{{skill.skills_id}}" name="skills_id">
-                            
-                            {% if skill.acquired == True %}
-                              <button type="submit">Acquired</button>
-                            {% else %}
-                              <button type="submit">Not acquired</button>
-                            {% endif %}
+                        <td>
+                          <form action="{% url 'deactivate_poll' poll.id %}" method="post">
+                              {% csrf_token %}
+                              <button type="submit" class="px-4 py-2 rounded {% if poll.active %}bg-green-500{% else %}bg-red-500{% endif %} text-white">
+                                  {% if poll.active %}
+                                      Activated
+                                  {% else %}
+                                      Deactivated
+                                  {% endif %}
+                              </button>
                           </form>  
-                        </td> -->
+                      </td>
 
                         <td class="px-4 py-2 whitespace-nowrap text-right text-sm">
                             <a href="{% url 'update_poll' poll.id %}" class="bg-yellow-500 text-white px-2 py-1 rounded ml-2">Edit</a>
