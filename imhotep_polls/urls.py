@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from polls_app.views import sitemap
+from polls_app import views
+
+handler404 = 'polls_app.error_handle.handler404'
+handler500 = 'polls_app.error_handle.handler500'
+handler403 = 'polls_app.error_handle.handler403'
+handler400 = 'polls_app.error_handle.handler400'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
