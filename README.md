@@ -27,7 +27,7 @@ A Django-based polling application that allows users to create, manage and share
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/imhotep_polls.git
+git clone https://github.com/Imhotep-Tech/imhotep_polls.git
 cd imhotep_polls
 ```
 
@@ -65,13 +65,6 @@ python manage.py runserver
 2. Register a new account or log in with an existing account.
 3. Create, manage, and share polls with others.
 4. View poll results and track votes.
-
-## Running Tests
-
-To run the tests, use the following command:
-```bash
-python manage.py test
-```
 
 ## Contributing
 
