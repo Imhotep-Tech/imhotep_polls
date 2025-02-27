@@ -204,7 +204,7 @@ def google_login(request):
     oauth2_url = (
         'https://accounts.google.com/o/oauth2/v2/auth?'
         f'client_id={GOOGLE_CLIENT_ID}&'
-        f'redirect_uri=http://127.0.0.1:8000/google/callback/&'
+        f'redirect_uri={SITE_DOMAIN}/google/callback/&'
         'response_type=code&'
         'scope=openid email profile'
     )
