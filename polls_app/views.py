@@ -14,7 +14,16 @@ def index(request):
         return redirect('dashboard')
     #if he is not logged in redirect to the login page
     else:
-        return redirect('login')
+        return redirect('landing_page')
+    
+def landing_page(request):
+    return render(request, 'landing_page.html')
+
+def terms(request):
+    return render(request, 'terms.html')
+
+def privacy(request):
+    return render(request, 'privacy.html')
 
 def get_url_pattern(pattern):
     """Helper function to get the URL pattern string"""

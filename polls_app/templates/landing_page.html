@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Navigation -->
+<nav class="bg-gray-900 w-full">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="/" class="text-white text-xl font-bold">Imhotep Polls</a>
+            </div>
+            <div class="flex items-center">
+                <a href="/login" class="text-gray-300 hover:text-white px-3 py-2">Login</a>
+                <a href="/register" class="text-gray-300 hover:text-white px-3 py-2">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-indigo-600 to-indigo-800 text-white py-20 w-full">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 animate__animated animate__fadeInDown">
+            Welcome to Imhotep Polls
+        </h1>
+        
+        <p class="text-xl mb-8 animate__animated animate__fadeInUp">
+            Create, share, and analyze polls with ease - your voice matters!
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="/register" class="w-full sm:w-auto bg-white text-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                Create Account Now for Free
+            </a>
+            <a href="/login" class="w-full sm:w-auto border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition duration-300">
+                Login
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-gray-50 w-full">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-16">
+            Why Use Imhotep Polls?
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300 animate__animated animate__fadeIn">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-poll"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Create Polls</h3>
+                <p class="text-gray-600">Create custom polls with multiple options and share them instantly.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300 animate__animated animate__fadeIn animate__delay-1s">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Real-time Results</h3>
+                <p class="text-gray-600">Watch votes come in and analyze results in real-time with interactive charts.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300 animate__animated animate__fadeIn animate__delay-2s">
+                <div class="text-indigo-600 text-4xl mb-4">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Secure Voting</h3>
+                <p class="text-gray-600">IP-based protection against duplicate votes ensures poll integrity.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="bg-indigo-600 py-20 w-full">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to Start Creating Polls?
+        </h2>
+        <p class="text-xl text-white mb-8">
+            Join our community and start gathering insights today!
+        </p>
+        <a href="/register" class="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+            Get Started
+        </a>
+    </div>
+</section>
+{% endblock %}

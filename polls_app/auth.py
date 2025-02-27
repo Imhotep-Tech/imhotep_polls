@@ -17,6 +17,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 import requests
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
+from imhotep_polls.settings import SITE_DOMAIN
 
 #the register route
 def register(request):
@@ -53,14 +54,13 @@ def register(request):
         user.save()
 
         # Send verification email
-        current_site = get_current_site(request)
         mail_subject = 'Activate your account.'
+        current_site = SITE_DOMAIN.rstrip('/')  # Remove trailing slash if present
         message = render_to_string('activate_mail_send.html', {
             'user': user,
-            'domain': current_site.domain,
+            'domain': current_site,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_token(user),
-            'activate':'activate'
         })
         send_mail(mail_subject, message, 'imhoteptech1@gmail.com', [email], html_message=message)
 
@@ -93,7 +93,8 @@ def activate(request, uidb64, token):
         messages.success(request, "Thank you for your email confirmation. You can now log in to your account.")
         return redirect('login')
     else:
-        return HttpResponse('Activation link is invalid!')
+        messages.success(request, "Activation link is invalid!")
+        return redirect('login')
 
 #the login route
 def user_login(request):
@@ -111,7 +112,20 @@ def user_login(request):
                     messages.success(request, "Login successful!")
                     return redirect("dashboard")
                 else:
+                    # Send verification email
+                    mail_subject = 'Activate your account.'
+                    current_site = SITE_DOMAIN.rstrip('/')  # Remove trailing slash if present
+                    message = render_to_string('activate_mail_send.html', {
+                        'user': user,
+                        'domain': current_site,
+                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                        'token': default_token_generator.make_token(user),
+                    })
+                    send_mail(mail_subject, message, 'imhoteptech1@gmail.com', [user.email], html_message=message)
+
                     messages.error(request, "E-mail not verified!")
+                    messages.info(request, "Please check your email to verify your account.")
+                    return redirect("login")
             else:
                 messages.error(request, "Invalid username or password!")
         else:
@@ -126,7 +140,20 @@ def user_login(request):
                         messages.success(request, "Login successful!")
                         return redirect("dashboard")
                     else:
+                        # Send verification email
+                        mail_subject = 'Activate your account.'
+                        current_site = SITE_DOMAIN.rstrip('/')  # Remove trailing slash if present
+                        message = render_to_string('activate_mail_send.html', {
+                            'user': user,
+                            'domain': current_site,
+                            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                            'token': default_token_generator.make_token(user),
+                        })
+                        send_mail(mail_subject, message, 'imhoteptech1@gmail.com', [user.email], html_message=message)
+
                         messages.error(request, "E-mail not verified!")
+                        messages.info(request, "Please check your email to verify your account.")
+                        return redirect("login")
                 else:
                     messages.error(request, "Invalid E-mail or password!")
             else:

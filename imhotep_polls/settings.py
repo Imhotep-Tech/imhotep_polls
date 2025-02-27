@@ -23,9 +23,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # Add your domain here
+if DEBUG:
+    # Add this to your settings
+    SITE_DOMAIN = 'http://127.0.0.1:8000'  # Replace with your actual domain
+else:
+    SITE_DOMAIN = 'https://imhoteppolls.pythonanywhere.com' 
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'imhoteppolls.pythonanywhere.com']  # Add your domain here
+
+if DEBUG == False:
+    # Security settings - keep these as they are
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Application definition
 
@@ -70,7 +89,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'imhoteptech1@gmail.com'
 EMAIL_HOST_PASSWORD =  config('MAIL_PASSWORD')
 
-
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
@@ -86,12 +104,9 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'OAUTH_PKCE_ENABLED': True,
-        'REDIRECT_URI': 'http://127.0.0.1:8000/google/callback/',
+        'REDIRECT_URI': f'{SITE_DOMAIN}/google/callback/',
     }
 }
-
-# Add this to your settings
-SITE_DOMAIN = 'http://127.0.0.1:8000/'  # Replace with your actual domain
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -111,7 +126,7 @@ ROOT_URLCONF = 'imhotep_polls.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'polls_app/templates')],  # Add this
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

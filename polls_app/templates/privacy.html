@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+        <h1 class="text-center text-2xl font-bold text-indigo-600 sm:text-3xl mb-8">Privacy Policy</h1>
+        {% include 'back.html' %}
+        <div class="bg-white rounded-lg shadow-lg p-6 space-y-6">
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-3">1. Introduction</h2>
+                <p class="text-gray-600">
+                    Welcome to Imhotep Polls. This Privacy Policy explains how we collect, use, and protect your information when you use our application. By using the application, you agree to the terms outlined in this policy.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-3">2. Information We Collect</h2>
+                <p class="text-gray-600">
+                    We collect the following types of information when you use Imhotep Polls:
+                </p>
+                <ul class="list-disc pl-6 mt-2 text-gray-600">
+                    <li><strong>Poll Data:</strong> Information about polls you create and votes you submit</li>
+                    <li><strong>Account Data:</strong> Your email, username, and authentication information</li>
+                    <li><strong>Usage Data:</strong> How you interact with the application</li>
+                    <li><strong>IP Address:</strong> Your IP address when you submit a vote to prevent multiple voting from the same source</li>
+                </ul>
+            </section>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">3. How We Use Your Information</h2>
+            <p class="text-gray-600">
+                We use the information we collect for the following purposes:
+            </p>
+            <ul class="list-disc pl-6 mt-2 text-gray-600">
+                <li>To provide, maintain, and improve the application</li>
+                <li>To monitor and analyze usage patterns to enhance performance and user experience</li>
+                <li>To detect, prevent, and address technical issues or security vulnerabilities</li>
+                <li>To communicate with you, including sending updates and notifications</li>
+                <li>To prevent duplicate voting and maintain poll integrity by tracking IP addresses</li>
+            </ul>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">4. Data Retention</h2>
+            <p class="text-gray-600">
+                IP addresses collected for vote validation are stored only for the duration of the active poll and are automatically deleted after the poll closes. We do not use these IP addresses for any other purpose than preventing duplicate votes.
+            </p>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">5. Data Sharing</h2>
+            <p class="text-gray-600">
+                We do not sell, trade, or otherwise transfer your personal information to third parties. However, we may share aggregated or anonymized data with partners for analytics or research purposes.
+            </p>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">6. Data Security</h2>
+            <p class="text-gray-600">
+                We take reasonable measures to protect your information from unauthorized access, alteration, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.
+            </p>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-3"> 7. Your Rights</h2>
+            <p class="text-gray-600">
+                You have the right to:
+            </p>
+            <ul class="list-disc pl-6 mt-2 text-gray-600">
+                <li>Access the personal information we hold about you.</li>
+                <li>Request correction or deletion of your personal information.</li>
+                <li>Object to the processing of your personal information.</li>
+            </ul>
+            <p class="text-gray-600">
+                To exercise these rights, please contact us at <a href="mailto:imhoteptech@outlook.com">imhoteptech@outlook.com</a>.
+            </p>
+
+            <h2 class="text-xl font-semibold text-gray-900 mb-3">8. Changes to This Policy</h2>
+            <p class="text-gray-600">
+                We may update this Privacy Policy from time to time. Any changes will be effective immediately upon posting on this page. Your continued use of the application after any changes constitutes your acceptance of the updated policy.
+            </p>
+
+            <section>
+                <h2 class="text-xl font-semibold text-gray-900 mb-3">9. Contact Us</h2>
+                <p class="text-gray-600">
+                    If you have any questions about this Privacy Policy, please contact us at 
+                    <a href="mailto:imhoteptech@outlook.com" class="text-indigo-600 hover:underline">imhoteptech@outlook.com</a>.
+                </p>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

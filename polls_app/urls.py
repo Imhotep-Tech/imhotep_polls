@@ -50,4 +50,8 @@ urlpatterns = [
     path('google/login/', auth.google_login, name='google_login'),
     path('google/callback/', auth.google_callback, name='google_callback'),
     path('google/handle-username/', auth.add_username_google_login, name='add_username_google_login'),
+
+    path('privacy/', views.privacy, name='privacy'),
+    path('terms/', views.terms, name='terms'),
+    path('landing_page/', views.landing_page, name='landing_page'),
 ]
