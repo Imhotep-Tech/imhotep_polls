@@ -165,9 +165,9 @@ def vote_to_poll(request):
         selected_choice.votes += 1
 
         try:
-            # Save both session indicator and IP record
+            # Save both session indicator
             request.session[vote_key] = True
-            Vote.objects.create(poll=poll, ip_address=ip_address)
+            # Vote.objects.create(poll=poll, ip_address=ip_address)
             
             #saves the new number of choices
             selected_choice.save()
