@@ -1,6 +1,6 @@
 # This Python code snippet is related to Django's admin interface. Here's what it does:
 from django.contrib import admin
-from .models import Poll, Choice, User
+from .models import Poll, Choice, User, Vote
 
 # Unregister the models if they are already registered
 for model in [Poll, Choice, User]:
@@ -11,3 +11,4 @@ for model in [Poll, Choice, User]:
 admin.site.register(Poll)
 admin.site.register(Choice)
 admin.site.register(User)
+admin.site.register(Vote)

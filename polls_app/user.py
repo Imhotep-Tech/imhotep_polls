@@ -144,13 +144,17 @@ def vote_to_poll(request):
     #get the users ip address
     ip_address = get_client_ip(request)
 
+    # Create a unique identifier for this user+poll combination
+    vote_key = f"voted_on_poll_{poll_id}"
+    
     #if the request is a post request
     if request.method == "POST":
-        #if this user that sends the request is already on the Votes table with the same ip and the same poll so we return an error for him
-        if Vote.objects.filter(poll=poll, ip_address=ip_address):
+        # Check if user has already voted using session
+        print(request.session)
+        if vote_key in request.session:
             messages.error(request, "You have already voted on this poll.")
             return render(request,"vote_submit.html")
-        
+            
         #gets the users choice_id
         selected_choice_id = request.POST.get("selected_choice")
 
@@ -161,18 +165,18 @@ def vote_to_poll(request):
         selected_choice.votes += 1
 
         try:
-            #created a new object of the votes
+            # Save both session indicator and IP record
+            request.session[vote_key] = True
             Vote.objects.create(poll=poll, ip_address=ip_address)
+            
             #saves the new number of choices
             selected_choice.save()
             #send a success message for the user
             messages.success(request, "Your vote has been recorded!")
         except IntegrityError:
-            #if something unexpected happens and a user make a poll again with the same ip and pass form the first check the db constrain will raise an error
-            #so this will catch that error
             messages.error(request, "You have already voted on this poll.")
 
-        #return a blank  page to show the message
+        #return a blank page to show the message
         return render(request,"vote_submit.html")
     
     #if the user is with a get request he will render the html page with the poll context
