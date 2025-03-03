@@ -15,7 +15,7 @@ A Django-based polling application that allows users to create, manage and share
 
 ## Tech Stack
 
-- Python 3.x
+- Python 3.13
 - Django 5.1.6 
 - PostgreSQL
 - HTML/CSS/JavaScript
